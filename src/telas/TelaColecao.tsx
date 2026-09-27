@@ -10,6 +10,7 @@ import { useJogo } from '../ganchos/useJogo';
 import type { IdDinossauro } from '../tipos';
 import { formatarNumero } from '../utilitarios/formatar';
 import type { Navegar } from './navegacao';
+import { IconeMoeda } from '../componentes/IconeMoeda';
 
 export function TelaColecao({ navegar }: { navegar: Navegar }) {
   const { estado } = useJogo();
@@ -37,7 +38,7 @@ export function TelaColecao({ navegar }: { navegar: Navegar }) {
               <SpriteDino id={id} armadura={armadura} modo={dino ? 'cor' : 'silhueta'} tamanho={180} />
               <span className="cartao-album__nome">{DINOSSAUROS[id].nome}</span>
               <span className="cartao-album__meta">
-                {dino ? `Nv ${dino.nivel} · ${ARMADURAS[armadura].nome}` : `💰 ${formatarNumero(DINOSSAUROS[id].precoCompra)}`}
+                {dino ? `Nv ${dino.nivel} · ${ARMADURAS[armadura].nome}` : <><IconeMoeda /> {formatarNumero(DINOSSAUROS[id].precoCompra)}</>}
               </span>
             </button>
           );

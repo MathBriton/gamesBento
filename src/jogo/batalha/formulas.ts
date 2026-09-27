@@ -18,9 +18,9 @@ export function vidaMaximaInimigo(fase: number, chefao: boolean): number {
   return base * (chefao ? CONFIG.multiplicadorVidaChefao : 1);
 }
 
-export function ouroPorInimigo(fase: number, chefao: boolean): number {
-  const base = vidaMaximaInimigo(fase, false) / CONFIG.divisorOuro;
-  return Math.max(1, Math.ceil(base * (chefao ? CONFIG.multiplicadorOuroChefao : 1)));
+export function moedasPorInimigo(fase: number, chefao: boolean): number {
+  const base = vidaMaximaInimigo(fase, false) / CONFIG.divisorMoedas;
+  return Math.max(1, Math.ceil(base * (chefao ? CONFIG.multiplicadorMoedasChefao : 1)));
 }
 
 /** Nível da armadura (0 = sem armadura … 10 = Nv 1000). */
@@ -56,13 +56,13 @@ export function custoNiveis(base: number, nivel: number, n: number): number {
   return Math.ceil((base * g ** (nivel - 1) * (g ** n - 1)) / (g - 1));
 }
 
-/** Máximo de níveis que dá para comprar com o ouro disponível. */
-export function maximoCompravel(base: number, nivel: number, ouro: number): number {
+/** Máximo de níveis que dá para comprar com as moedas disponíveis. */
+export function maximoCompravel(base: number, nivel: number, moedas: number): number {
   const g = CONFIG.crescimentoCustoNivel;
   const primeiro = base * g ** (nivel - 1);
-  if (ouro < primeiro) return 0;
-  let n = Math.floor(Math.log((ouro * (g - 1)) / primeiro + 1) / Math.log(g));
+  if (moedas < primeiro) return 0;
+  let n = Math.floor(Math.log((moedas * (g - 1)) / primeiro + 1) / Math.log(g));
   // Corrige arredondamentos de ponto flutuante.
-  while (n > 0 && custoNiveis(base, nivel, n) > ouro) n--;
+  while (n > 0 && custoNiveis(base, nivel, n) > moedas) n--;
   return n;
 }

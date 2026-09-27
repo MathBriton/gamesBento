@@ -7,7 +7,7 @@ import { comprarDinossauro, comprarNiveisDinossauro, comprarNiveisGarra, cotarDi
 import { criarEstadoInicial } from './estado';
 
 // Simulação de balanceamento: ~3 toques/s, compra espécie nova assim que pode e depois a melhoria
-// com melhor dano por ouro. Rodar com `npm run simular` (fora dos testes normais).
+// com melhor dano por moedas. Rodar com `npm run simular` (fora dos testes normais).
 it('simulacao', () => {
   let e: EstadoJogo = criarEstadoInicial(0);
   const marcas = [1, 5, 15, 30, 60, 120, 240, 480].map((m) => m * 60);
@@ -28,7 +28,7 @@ it('simulacao', () => {
         for (const id of IDS_DINOSSAUROS) {
           const d = e.dinossauros[id];
           if (!d) {
-            if (e.ouro >= precoDinossauro(id)) {
+            if (e.moedas >= precoDinossauro(id)) {
               const ganho = Infinity; // jogador real compra espécie nova assim que pode
               if (!melhor || ganho > melhor.ganho) melhor = { ganho, comprar: () => comprarDinossauro(e, id, agora)! };
             }

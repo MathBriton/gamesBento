@@ -18,9 +18,9 @@ export interface Dinossauro {
   curiosidade: string;
   /** Dano por segundo no nível 1. */
   danoBase: number;
-  /** Custo em ouro para subir do nível 1 para o 2. */
+  /** Custo em moedas para subir do nível 1 para o 2. */
   custoBaseNivel: number;
-  /** Preço em ouro para comprar (contratar) o dinossauro. */
+  /** Preço em moedas para comprar (contratar) o dinossauro. */
   precoCompra: number;
 }
 
@@ -68,7 +68,7 @@ export interface EstadoJogo {
   jogador: { criadoEm: number };
   /** Último momento em que o jogo estava aberto, para calcular o ganho offline. */
   vistoPorUltimo: number;
-  ouro: number;
+  moedas: number;
   dinossauros: Partial<Record<IdDinossauro, DinossauroDoJogador>>;
   /** Nível da Garra: define o dano do toque. */
   nivelGarra: number;

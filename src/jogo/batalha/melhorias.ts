@@ -10,7 +10,7 @@ export function precoDinossauro(id: IdDinossauro): number {
 }
 
 export function podeComprarDinossauro(estado: EstadoJogo, id: IdDinossauro): boolean {
-  return !estado.dinossauros[id] && estado.ouro >= precoDinossauro(id);
+  return !estado.dinossauros[id] && estado.moedas >= precoDinossauro(id);
 }
 
 /** Compra (contrata) um dinossauro: entra no time no nível 1. */
@@ -18,7 +18,7 @@ export function comprarDinossauro(estado: EstadoJogo, id: IdDinossauro, agora: n
   if (!podeComprarDinossauro(estado, id)) return null;
   return {
     ...estado,
-    ouro: estado.ouro - precoDinossauro(id),
+    moedas: estado.moedas - precoDinossauro(id),
     dinossauros: { ...estado.dinossauros, [id]: { nivel: 1, obtidoEm: agora } },
   };
 }
@@ -40,23 +40,23 @@ export interface Cotacao {
  * Quanto custa a compra no modo escolhido, respeitando o nível máximo.
  * No modo "max", pelo menos 1 nível é cotado (para mostrar o preço do próximo).
  */
-export function cotar(base: number, nivel: number, ouro: number, quantidade: QuantidadeCompra, nivelMaximo = Infinity): Cotacao {
+export function cotar(base: number, nivel: number, moedas: number, quantidade: QuantidadeCompra, nivelMaximo = Infinity): Cotacao {
   const restante = nivelMaximo - nivel;
   if (restante <= 0) return { niveis: 0, custo: 0, podePagar: false, noMaximo: true };
-  const pedido = quantidade === 'max' ? Math.max(1, maximoCompravel(base, nivel, ouro)) : quantidade;
+  const pedido = quantidade === 'max' ? Math.max(1, maximoCompravel(base, nivel, moedas)) : quantidade;
   const niveis = Math.min(pedido, restante);
   const custo = custoNiveis(base, nivel, niveis);
-  return { niveis, custo, podePagar: ouro >= custo, noMaximo: false };
+  return { niveis, custo, podePagar: moedas >= custo, noMaximo: false };
 }
 
 export function cotarDinossauro(estado: EstadoJogo, id: IdDinossauro, quantidade: QuantidadeCompra): Cotacao | null {
   const dino = estado.dinossauros[id];
   if (!dino) return null;
-  return cotar(DINOSSAUROS[id].custoBaseNivel, dino.nivel, estado.ouro, quantidade, CONFIG.nivelMaximo);
+  return cotar(DINOSSAUROS[id].custoBaseNivel, dino.nivel, estado.moedas, quantidade, CONFIG.nivelMaximo);
 }
 
 export function cotarGarra(estado: EstadoJogo, quantidade: QuantidadeCompra): Cotacao {
-  return cotar(CONFIG.custoBaseGarra, estado.nivelGarra, estado.ouro, quantidade);
+  return cotar(CONFIG.custoBaseGarra, estado.nivelGarra, estado.moedas, quantidade);
 }
 
 export interface ResultadoNiveis {
@@ -83,11 +83,11 @@ export function adicionarNiveis(estado: EstadoJogo, id: IdDinossauro, niveis: nu
 export function comprarNiveisDinossauro(estado: EstadoJogo, id: IdDinossauro, quantidade: QuantidadeCompra): ResultadoNiveis | null {
   const c = cotarDinossauro(estado, id, quantidade);
   if (!c || !c.podePagar) return null;
-  return adicionarNiveis({ ...estado, ouro: estado.ouro - c.custo }, id, c.niveis);
+  return adicionarNiveis({ ...estado, moedas: estado.moedas - c.custo }, id, c.niveis);
 }
 
 export function comprarNiveisGarra(estado: EstadoJogo, quantidade: QuantidadeCompra): EstadoJogo | null {
   const c = cotarGarra(estado, quantidade);
   if (!c.podePagar) return null;
-  return { ...estado, ouro: estado.ouro - c.custo, nivelGarra: estado.nivelGarra + c.niveis };
+  return { ...estado, moedas: estado.moedas - c.custo, nivelGarra: estado.nivelGarra + c.niveis };
 }

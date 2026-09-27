@@ -1,18 +1,18 @@
 /** Parâmetros de balanceamento. Ajustar aqui, não nos componentes. */
 export const CONFIG = {
-  ouroInicial: 0,
+  moedasIniciais: 0,
 
   /* Inimigos */
   inimigosPorFase: 10,
   /** A cada N fases a fase é de chefão. */
   chefaoACada: 5,
   multiplicadorVidaChefao: 10,
-  multiplicadorOuroChefao: 5,
+  multiplicadorMoedasChefao: 5,
   tempoChefaoMs: 30_000,
   vidaInimigoBase: 5,
   crescimentoVidaInimigo: 1.4,
-  /** Ouro por inimigo = vida máxima / divisorOuro. */
-  divisorOuro: 5,
+  /** Moedas por inimigo = vida máxima / divisorMoedas. */
+  divisorMoedas: 5,
 
   /* Dinossauros */
   nivelMaximo: 1000,

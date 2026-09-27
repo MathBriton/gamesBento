@@ -18,6 +18,7 @@ import {
 import { useJogo } from '../../ganchos/useJogo';
 import type { IdDinossauro } from '../../tipos';
 import { formatarNumero } from '../../utilitarios/formatar';
+import { IconeMoeda } from '../../componentes/IconeMoeda';
 
 const QUANTIDADES: QuantidadeCompra[] = [1, 10, 100, 'max'];
 
@@ -36,10 +37,10 @@ function BotaoNiveis({ cotacao, aoComprar }: { cotacao: Cotacao; aoComprar: () =
       className="botao-compra"
       disabled={!cotacao.podePagar}
       onClick={aoComprar}
-      aria-label={`Subir ${cotacao.niveis} níveis por ${formatarNumero(cotacao.custo)} de ouro`}
+      aria-label={`Subir ${cotacao.niveis} níveis por ${formatarNumero(cotacao.custo)} moedas`}
     >
       <span className="botao-compra__niveis">▲ +{cotacao.niveis}</span>
-      <span className="botao-compra__custo">💰 {formatarNumero(cotacao.custo)}</span>
+      <span className="botao-compra__custo"><IconeMoeda /> {formatarNumero(cotacao.custo)}</span>
     </button>
   );
 }
@@ -123,10 +124,10 @@ export function PainelTime({
                 className="botao-compra botao-compra--comprar"
                 disabled={!pode}
                 onClick={() => comprar(id)}
-                aria-label={`Comprar ${especie.nome} por ${formatarNumero(especie.precoCompra)} de ouro`}
+                aria-label={`Comprar ${especie.nome} por ${formatarNumero(especie.precoCompra)} moedas`}
               >
                 <span className="botao-compra__niveis">Comprar</span>
-                <span className="botao-compra__custo">💰 {formatarNumero(especie.precoCompra)}</span>
+                <span className="botao-compra__custo"><IconeMoeda /> {formatarNumero(especie.precoCompra)}</span>
               </button>
             </div>
           );

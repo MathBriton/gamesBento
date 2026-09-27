@@ -2,10 +2,10 @@ import { CONFIG } from '../../dados/config';
 import { TIPOS_INIMIGO } from '../../dados/inimigos';
 import type { EstadoBatalha, EstadoJogo } from '../../tipos';
 import { sortear, type Aleatorio } from '../../utilitarios/aleatorio';
-import { danoDoTime, ehFaseDeChefao, ouroPorInimigo, vidaMaximaInimigo } from './formulas';
+import { danoDoTime, ehFaseDeChefao, moedasPorInimigo, vidaMaximaInimigo } from './formulas';
 
 export type EventoBatalha =
-  | { tipo: 'abate'; ouro: number; chefao: boolean }
+  | { tipo: 'abate'; moedas: number; chefao: boolean }
   | { tipo: 'fase'; fase: number }
   | { tipo: 'chefaoFalhou' };
 
@@ -53,8 +53,8 @@ export function aplicarDano(estado: EstadoJogo, dano: number, agora: number, ale
     return { estado: { ...estado, batalha: { ...b, vidaInimigo: b.vidaInimigo - dano } }, eventos: [] };
   }
 
-  const ouro = ouroPorInimigo(b.fase, b.ehChefao);
-  const eventos: EventoBatalha[] = [{ tipo: 'abate', ouro, chefao: b.ehChefao }];
+  const moedas = moedasPorInimigo(b.fase, b.ehChefao);
+  const eventos: EventoBatalha[] = [{ tipo: 'abate', moedas, chefao: b.ehChefao }];
   let proxima: EstadoBatalha;
 
   if (b.ehChefao) {
@@ -72,7 +72,7 @@ export function aplicarDano(estado: EstadoJogo, dano: number, agora: number, ale
     }
   }
 
-  return { estado: { ...estado, ouro: estado.ouro + ouro, batalha: proxima }, eventos };
+  return { estado: { ...estado, moedas: estado.moedas + moedas, batalha: proxima }, eventos };
 }
 
 /** Avança o tempo: dano automático do time e o relógio do chefão. */

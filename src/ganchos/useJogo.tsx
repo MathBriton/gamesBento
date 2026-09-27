@@ -55,7 +55,7 @@ export interface Aviso {
 }
 
 export interface RelatorioOffline {
-  ouro: number;
+  moedas: number;
   tempoMs: number;
 }
 
@@ -77,7 +77,7 @@ const ContextoJogo = createContext<ValorJogo | null>(null);
 function carregarComOffline(): { estado: EstadoJogo; relatorio: RelatorioOffline | null } {
   const agora = Date.now();
   const r = aplicarOffline(carregarJogo(agora), agora);
-  return { estado: r.estado, relatorio: r.ouro > 0 ? { ouro: r.ouro, tempoMs: r.tempoMs } : null };
+  return { estado: r.estado, relatorio: r.moedas > 0 ? { moedas: r.moedas, tempoMs: r.tempoMs } : null };
 }
 
 export function ProvedorJogo({ children }: { children: ReactNode }) {
@@ -100,7 +100,7 @@ export function ProvedorJogo({ children }: { children: ReactNode }) {
       } else if (escondidaEm !== null) {
         const r = aplicarOffline({ ...loja.ler(), vistoPorUltimo: escondidaEm }, Date.now());
         loja.gravar(r.estado);
-        if (r.ouro > 0) setOffline({ ouro: r.ouro, tempoMs: r.tempoMs });
+        if (r.moedas > 0) setOffline({ moedas: r.moedas, tempoMs: r.tempoMs });
         escondidaEm = null;
       }
     };

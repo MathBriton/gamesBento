@@ -91,7 +91,9 @@ button:focus-visible { outline: 4px solid #ffd93d; outline-offset: 3px; }
   padding: 6px 12px; border-radius: 999px; border: 3px solid var(--contorno);
   background: rgba(255, 255, 255, 0.92); font-weight: 900; font-size: 1.1rem; white-space: nowrap;
 }
-.recurso--ouro { background: #fff6d6; font-size: 1.3rem; }
+.recurso--moedas { background: #fff6d6; font-size: 1.3rem; }
+.icone-moeda { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; flex-shrink: 0; }
+.flutuante .icone-moeda { margin-left: 2px; }
 
 /* ---------- Abertura ---------- */
 .abertura {
@@ -193,7 +195,7 @@ button:focus-visible { outline: 4px solid #ffd93d; outline-offset: 3px; }
   animation: flutuar-acerto 0.9s ease-out forwards;
 }
 .flutuante--critico { font-size: 2rem; color: #ffd23f; }
-.flutuante--ouro { font-size: 1.3rem; color: #ffe066; }
+.flutuante--moedas { font-size: 1.3rem; color: #ffe066; }
 
 .botao-chefao {
   position: absolute; top: 42%; right: 10px; z-index: 4; padding: 12px 16px;
@@ -370,7 +372,7 @@ button:focus-visible { outline: 4px solid #ffd93d; outline-offset: 3px; }
 @media (max-width: 480px) {
   :root { --toque: 64px; }
   .recurso { font-size: 0.95rem; padding: 4px 9px; }
-  .recurso--ouro { font-size: 1.05rem; }
+  .recurso--moedas { font-size: 1.05rem; }
   .barra-topo__titulo { font-size: 1.2rem; }
   .linha-melhoria { grid-template-columns: 56px 1fr auto; gap: 8px; }
   .linha-melhoria__sprite, .linha-melhoria__icone { width: 56px; }

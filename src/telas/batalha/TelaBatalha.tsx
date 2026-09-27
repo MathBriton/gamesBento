@@ -17,6 +17,7 @@ import type { Navegar } from '../navegacao';
 import { ModalArmadura } from './ModalArmadura';
 import { PainelTime } from './PainelTime';
 import { zonaDaFase } from './zona';
+import { IconeMoeda } from '../../componentes/IconeMoeda';
 
 const INTERVALO_MS = 100;
 const MAXIMO_FLUTUANTES = 14;
@@ -26,7 +27,7 @@ interface TextoFlutuante {
   x: number;
   y: number;
   texto: string;
-  tipo: 'acerto' | 'critico' | 'ouro';
+  tipo: 'acerto' | 'critico' | 'moedas';
 }
 
 export function TelaBatalha({ navegar }: { navegar: Navegar }) {
@@ -53,7 +54,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
     for (const ev of eventos) {
       if (ev.tipo === 'abate') {
         if (doToque || ev.chefao) tocarEfeito('moeda');
-        adicionarFlutuante({ x: 50 + (Math.random() * 20 - 10), y: 30, texto: `+${formatarNumero(ev.ouro)} 💰`, tipo: 'ouro' });
+        adicionarFlutuante({ x: 50 + (Math.random() * 20 - 10), y: 30, texto: `+${formatarNumero(ev.moedas)}`, tipo: 'moedas' });
       } else if (ev.tipo === 'chefaoFalhou') {
         tocarEfeito('falha');
         mostrarAviso('⏱️ Tempo esgotado!');
@@ -109,7 +110,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
   return (
     <div className="tela tela-batalha" style={{ background: zona.regiao.fundo }}>
       <header className="batalha-topo">
-        <span className="recurso recurso--ouro" title="Ouro">💰 {formatarNumero(estado.ouro)}</span>
+        <span className="recurso recurso--moedas" title="Moedas"><IconeMoeda /> {formatarNumero(estado.moedas)}</span>
         <span className="recurso" title="Dano por segundo do time">⚔️ {formatarNumero(danoDoTime(estado))}/s</span>
         <div className="batalha-topo__botoes">
           <button type="button" className="botao-icone" aria-label="Coleção" onClick={() => navegar('colecao')}>📖</button>
@@ -166,6 +167,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
         {flutuantes.map((f) => (
           <span key={f.id} className={`flutuante flutuante--${f.tipo}`} style={{ left: `${f.x}%`, top: `${f.y}%` }}>
             {f.texto}
+            {f.tipo === 'moedas' && <IconeMoeda />}
           </span>
         ))}
 
@@ -195,7 +197,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
             <div className="offline__icone">🌙</div>
             <h2>Bem-vindo de volta!</h2>
             <p>Seu time lutou por <b>{formatarDuracao(offline.tempoMs)}</b> enquanto você estava fora.</p>
-            <div className="linha-premio">+{formatarNumero(offline.ouro)} 💰</div>
+            <div className="linha-premio">+{formatarNumero(offline.moedas)} <IconeMoeda /></div>
             <BotaoGrande icone="⚔️" rotulo="Coletar" cor="laranja" aoClicar={fecharOffline} />
           </div>
         </Modal>

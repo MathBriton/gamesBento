@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { tocarEfeito } from '../audio/som';
 import { useJogo } from '../ganchos/useJogo';
 import { formatarNumero } from '../utilitarios/formatar';
+import { IconeMoeda } from './IconeMoeda';
 
 type CorBotao = 'verde' | 'azul' | 'laranja' | 'rosa' | 'roxo' | 'cinza';
 
@@ -35,7 +36,7 @@ export function BotaoGrande({ icone, rotulo, aoClicar, cor = 'verde', tamanho = 
   );
 }
 
-/** Barra superior das telas secundárias: voltar, título e ouro. */
+/** Barra superior das telas secundárias: voltar, título e moedas. */
 export function BarraTopo({ aoVoltar, titulo }: { aoVoltar: () => void; titulo?: ReactNode }) {
   const { estado } = useJogo();
   return (
@@ -44,7 +45,7 @@ export function BarraTopo({ aoVoltar, titulo }: { aoVoltar: () => void; titulo?:
         ⬅️
       </button>
       {titulo && <div className="barra-topo__titulo">{titulo}</div>}
-      <span className="recurso recurso--ouro" title="Ouro">💰 {formatarNumero(estado.ouro)}</span>
+      <span className="recurso recurso--moedas" title="Moedas"><IconeMoeda /> {formatarNumero(estado.moedas)}</span>
     </header>
   );
 }

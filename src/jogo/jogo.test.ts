@@ -6,7 +6,7 @@ import { DINOSSAUROS, IDS_DINOSSAUROS } from '../dados/dinossauros';
 import type { EstadoJogo } from '../tipos';
 import { formatarNumero } from '../utilitarios/formatar';
 import { aplicarDano, avancarTempo, enfrentarChefao } from './batalha/batalha';
-import { custoNiveis, danoDinossauro, danoDoTime, maximoCompravel, nivelArmaduraDe, ouroPorInimigo, vidaMaximaInimigo } from './batalha/formulas';
+import { custoNiveis, danoDinossauro, danoDoTime, maximoCompravel, nivelArmaduraDe, moedasPorInimigo, vidaMaximaInimigo } from './batalha/formulas';
 import {
   adicionarNiveis,
   comprarDinossauro,
@@ -41,18 +41,18 @@ describe('estado inicial', () => {
 });
 
 describe('compra de dinossauros', () => {
-  it('compra com ouro e entra no nível 1', () => {
+  it('compra com moedas e entra no nível 1', () => {
     const preco = DINOSSAUROS.triceratops.precoCompra;
     const pobre = criarEstadoInicial(T0);
     expect(podeComprarDinossauro(pobre, 'triceratops')).toBe(false);
     expect(comprarDinossauro(pobre, 'triceratops', T0)).toBeNull();
 
-    const rico = { ...pobre, ouro: preco + 5 };
+    const rico = { ...pobre, moedas: preco + 5 };
     const e = comprarDinossauro(rico, 'triceratops', T0)!;
     expect(e.dinossauros.triceratops).toEqual({ nivel: 1, obtidoEm: T0 });
-    expect(e.ouro).toBe(5);
+    expect(e.moedas).toBe(5);
     // Não compra o mesmo duas vezes.
-    expect(comprarDinossauro({ ...e, ouro: 1e9 }, 'triceratops', T0)).toBeNull();
+    expect(comprarDinossauro({ ...e, moedas: 1e9 }, 'triceratops', T0)).toBeNull();
   });
 
   it('espécies ficam mais caras e mais fortes na ordem de compra', () => {
@@ -81,7 +81,7 @@ describe('níveis e armaduras', () => {
     expect(r.estado.dinossauros.triceratops?.nivel).toBe(CONFIG.nivelMaximo);
     expect(r.niveis).toBe(5);
     expect(r.novaArmadura).toBe(10);
-    const cota = cotarDinossauro({ ...r.estado, ouro: 1e300 }, 'triceratops', 10)!;
+    const cota = cotarDinossauro({ ...r.estado, moedas: 1e300 }, 'triceratops', 10)!;
     expect(cota.noMaximo).toBe(true);
     expect(cota.podePagar).toBe(false);
   });
@@ -91,13 +91,13 @@ describe('níveis e armaduras', () => {
     expect(c.niveis).toBe(5);
   });
 
-  it('comprar níveis gasta ouro e informa nova armadura', () => {
-    const e = { ...comDino(99), ouro: 1e12 };
+  it('comprar níveis gasta moedas e informa nova armadura', () => {
+    const e = { ...comDino(99), moedas: 1e12 };
     const r = comprarNiveisDinossauro(e, 'triceratops', 1)!;
     expect(r.estado.dinossauros.triceratops?.nivel).toBe(100);
     expect(r.novaArmadura).toBe(1);
-    expect(r.estado.ouro).toBeLessThan(e.ouro);
-    expect(comprarNiveisDinossauro({ ...comDino(5), ouro: 0 }, 'triceratops', 1)).toBeNull();
+    expect(r.estado.moedas).toBeLessThan(e.moedas);
+    expect(comprarNiveisDinossauro({ ...comDino(5), moedas: 0 }, 'triceratops', 1)).toBeNull();
   });
 
   it('dano dobra nos marcos e multiplica a cada armadura', () => {
@@ -113,21 +113,21 @@ describe('níveis e armaduras', () => {
   });
 
   it('garra aumenta o nível do toque', () => {
-    expect(comprarNiveisGarra({ ...criarEstadoInicial(T0), ouro: 1000 }, 10)!.nivelGarra).toBe(11);
+    expect(comprarNiveisGarra({ ...criarEstadoInicial(T0), moedas: 1000 }, 10)!.nivelGarra).toBe(11);
   });
 });
 
 describe('batalha', () => {
-  it('derrotar 10 inimigos avança de fase e dá ouro', () => {
+  it('derrotar 10 inimigos avança de fase e dá moedas', () => {
     let e = criarEstadoInicial(T0);
     for (let i = 0; i < CONFIG.inimigosPorFase; i++) e = aplicarDano(e, e.batalha.vidaInimigo, T0, aleatorio).estado;
     expect(e.batalha.fase).toBe(2);
-    expect(e.ouro).toBe(ouroPorInimigo(1, false) * CONFIG.inimigosPorFase);
+    expect(e.moedas).toBe(moedasPorInimigo(1, false) * CONFIG.inimigosPorFase);
   });
 
-  it('chefão tem mais vida e dá mais ouro', () => {
+  it('chefão tem mais vida e dá mais moedas', () => {
     expect(vidaMaximaInimigo(5, true)).toBe(vidaMaximaInimigo(5, false) * CONFIG.multiplicadorVidaChefao);
-    expect(ouroPorInimigo(5, true)).toBeGreaterThan(ouroPorInimigo(5, false));
+    expect(moedasPorInimigo(5, true)).toBeGreaterThan(moedasPorInimigo(5, false));
   });
 
   it('perder para o chefão volta uma fase em treino; dá para tentar de novo', () => {
@@ -157,14 +157,14 @@ describe('batalha', () => {
 });
 
 describe('offline e salvamento', () => {
-  it('ganha ouro enquanto fechado, com limite de tempo', () => {
+  it('ganha moedas enquanto fechado, com limite de tempo', () => {
     const e = { ...comDino(50), vistoPorUltimo: T0 };
-    expect(aplicarOffline(e, T0 + 60 * 60_000).ouro).toBeGreaterThan(0);
+    expect(aplicarOffline(e, T0 + 60 * 60_000).moedas).toBeGreaterThan(0);
     expect(aplicarOffline(e, T0 + 7 * 24 * 60 * 60_000).tempoMs).toBe(CONFIG.offlineMaximoMs);
-    expect(aplicarOffline(e, T0 + 1000).ouro).toBe(0);
+    expect(aplicarOffline(e, T0 + 1000).moedas).toBe(0);
   });
 
-  it('migra save v3 (inglês, com ovos) mantendo níveis, ouro e ajustes', () => {
+  it('migra save v3 (inglês, com ovos) mantendo níveis, moedas e ajustes', () => {
     const v3 = {
       version: 3,
       gold: 500,
@@ -176,7 +176,7 @@ describe('offline e salvamento', () => {
     const e = migrar(v3, criarEstadoInicial(T0));
     expect(e.dinossauros.tiranossauro).toEqual({ nivel: 150, obtidoEm: 7 });
     expect(e.dinossauros.braquiossauro?.nivel).toBe(3);
-    expect(e.ouro).toBe(500);
+    expect(e.moedas).toBe(500);
     expect(e.nivelGarra).toBe(12);
     expect(e.ajustes).toEqual({ musica: false, efeitos: true, narracao: false, volume: 0.3 });
     expect('ovos' in e).toBe(false);
@@ -186,14 +186,22 @@ describe('offline e salvamento', () => {
     const v2 = { version: 2, collection: { triceratops: { discoveredAt: 5, count: 1 } }, stars: 40 } as unknown as Parameters<typeof migrar>[0];
     const e = migrar(v2, criarEstadoInicial(T0));
     expect(e.dinossauros.triceratops).toEqual({ nivel: 1, obtidoEm: 5 });
-    expect(e.ouro).toBe(0);
+    expect(e.moedas).toBe(0);
+  });
+
+  it('migra save v4 (campo ouro) para moedas', () => {
+    const v4 = { ...criarEstadoInicial(T0), versao: 4, ouro: 777 } as unknown as Parameters<typeof migrar>[0];
+    delete (v4 as { moedas?: number }).moedas;
+    const e = migrar(v4, criarEstadoInicial(T0));
+    expect(e.moedas).toBe(777);
+    expect('ouro' in e).toBe(false);
   });
 
   it('save atual sobrevive a salvar e carregar', () => {
-    const e = { ...comDino(42), ouro: 123 };
+    const e = { ...comDino(42), moedas: 123 };
     const volta = migrar(JSON.parse(JSON.stringify(e)), criarEstadoInicial(T0));
     expect(volta.dinossauros.triceratops?.nivel).toBe(42);
-    expect(volta.ouro).toBe(123);
+    expect(volta.moedas).toBe(123);
   });
 });
 

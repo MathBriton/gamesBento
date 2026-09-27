@@ -45,6 +45,8 @@ const IDS_ANTIGOS: Record<string, IdDinossauro> = {
 };
 
 interface SaveAntigo {
+  /** v4 (renomeado para `moedas` na v5) */
+  ouro?: number;
   version?: number;
   gold?: number;
   clawLevel?: number;
@@ -61,21 +63,24 @@ interface SaveAntigo {
 type SaveQualquer = Partial<EstadoJogo> & SaveAntigo;
 
 export function migrar(salvo: SaveQualquer, novo: EstadoJogo): EstadoJogo {
-  if ((salvo.versao ?? 0) >= VERSAO_SAVE) {
-    return {
-      ...novo,
-      ...salvo,
-      versao: VERSAO_SAVE,
-      jogador: { ...novo.jogador, ...salvo.jogador },
-      ajustes: { ...novo.ajustes, ...salvo.ajustes },
-      batalha: { ...novo.batalha, ...salvo.batalha },
-      dinossauros: salvo.dinossauros ?? {},
-    };
-  }
-  return migrarDeVersaoEmIngles(salvo, novo);
+  // v1–v3 não tinham o campo `versao` (usavam `version`, em inglês).
+  if (salvo.versao === undefined) return migrarDeVersaoEmIngles(salvo, novo);
+  const resultado: EstadoJogo & { ouro?: number } = {
+    ...novo,
+    ...salvo,
+    versao: VERSAO_SAVE,
+    // v4 → v5: `ouro` passou a se chamar `moedas`.
+    moedas: salvo.moedas ?? salvo.ouro ?? novo.moedas,
+    jogador: { ...novo.jogador, ...salvo.jogador },
+    ajustes: { ...novo.ajustes, ...salvo.ajustes },
+    batalha: { ...novo.batalha, ...salvo.batalha },
+    dinossauros: salvo.dinossauros ?? {},
+  };
+  delete resultado.ouro;
+  return resultado;
 }
 
-/** v1–v3: nomes em inglês. Mantém dinossauros (e níveis na v3), ouro e ajustes; ovos deixam de existir. */
+/** v1–v3: nomes em inglês. Mantém dinossauros (e níveis na v3), moedas e ajustes; ovos deixam de existir. */
 function migrarDeVersaoEmIngles(salvo: SaveAntigo, novo: EstadoJogo): EstadoJogo {
   const dinossauros: EstadoJogo['dinossauros'] = {};
   const origem = salvo.dinos ?? salvo.collection ?? {};
@@ -88,7 +93,7 @@ function migrarDeVersaoEmIngles(salvo: SaveAntigo, novo: EstadoJogo): EstadoJogo
   const s = salvo.settings ?? {};
   return {
     ...novo,
-    ouro: salvo.version === 3 ? salvo.gold ?? 0 : novo.ouro,
+    moedas: salvo.version === 3 ? salvo.gold ?? 0 : novo.moedas,
     nivelGarra: salvo.version === 3 ? salvo.clawLevel ?? 1 : novo.nivelGarra,
     dinossauros,
     ajustes: {
