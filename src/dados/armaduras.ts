@@ -39,7 +39,7 @@ const OURO: Material = { nome: 'Ouro', cor: '#ffcc33', detalhe: '#b07d00' };
 const ESMERALDA: Material = { nome: 'Esmeralda', cor: '#43d18f', detalhe: '#1b7a4d' };
 const SAFIRA: Material = { nome: 'Safira', cor: '#4d8dff', detalhe: '#1f4fb0' };
 const RUBI: Material = { nome: 'Rubi', cor: '#ff4d6d', detalhe: '#a3182f' };
-const LENDARIA: Material = { nome: 'Lendária', cor: '#fff2a8', detalhe: '#d49b00' };
+const LENDARIA: Material = { nome: 'Lendária', cor: '#9ff0ff', detalhe: '#e0a400' };
 
 const CONJUNTO_COMPLETO: PecaArmadura[] = ['capacete', 'dorso', 'ombreira', 'caneleiras', 'cauda'];
 
@@ -54,7 +54,7 @@ export const ARMADURAS: NivelArmadura[] = [
   { nivel: 7, nome: 'Esmeralda', material: ESMERALDA, pecas: CONJUNTO_COMPLETO, gema: '#eafff4', aura: '#43d18f', penacho: true, brilhos: false },
   { nivel: 8, nome: 'Safira', material: SAFIRA, pecas: CONJUNTO_COMPLETO, gema: '#e6f0ff', aura: '#4d8dff', penacho: true, brilhos: false },
   { nivel: 9, nome: 'Rubi', material: RUBI, pecas: CONJUNTO_COMPLETO, gema: '#fff0f3', aura: '#ff4d6d', penacho: true, brilhos: false },
-  { nivel: 10, nome: 'Lendária', material: LENDARIA, pecas: CONJUNTO_COMPLETO, gema: '#4dd2ff', aura: '#ffc93d', penacho: true, brilhos: true },
+  { nivel: 10, nome: 'Lendária', material: LENDARIA, pecas: CONJUNTO_COMPLETO, gema: '#ffcc33', aura: '#ffc93d', penacho: true, brilhos: true },
 ];
 
 export const NIVEL_ARMADURA_MAXIMO = ARMADURAS.length - 1;

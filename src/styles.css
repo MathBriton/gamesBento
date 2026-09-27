@@ -490,3 +490,14 @@ button:focus-visible { outline: 4px solid #ffd93d; outline-offset: 3px; }
   .resource { font-size: 1rem; padding: 4px 9px; }
   .top-bar__title { font-size: 1.4rem; }
 }
+
+/* ---------- Galeria (ferramenta de desenvolvimento, ?galeria) ---------- */
+.galeria { padding: 16px; height: 100%; overflow: auto; background: #fffaf0; }
+.galeria h1 { margin: 0 0 4px; font-size: 1.4rem; }
+.galeria p { margin: 0 0 12px; opacity: 0.7; font-size: 0.85rem; }
+.galeria__tabela { display: inline-flex; flex-direction: column; gap: 4px; }
+.galeria__linha { display: grid; grid-template-columns: 120px repeat(12, 132px); align-items: center; gap: 4px; }
+.galeria__linha--titulo { text-align: center; font-weight: 800; font-size: 0.85rem; }
+.galeria__rotulo { font-weight: 900; }
+.galeria__sprite { width: 132px; background: #f3ecdc; border-radius: 12px; }
+.brilho { animation: twinkle 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }

@@ -55,10 +55,26 @@ src/
 │   ├── jogo.test.ts          Testes
 │   └── simulacao.sim.ts      Simulação de balanceamento (npm run simular)
 ├── armazenamento/salvamento.ts  localStorage + migração de saves antigos
+├── componentes/
+│   ├── Cel.tsx               Primitivas do estilo (contorno, cel shading, misturarCor)
+│   ├── SpriteDino.tsx        Dinossauro (SVG ou imagem WebP, se existir) + armadura
+│   └── dino/                 especies.tsx (6 desenhos), primitivas.tsx, ancoras.ts, Armadura.tsx
+├── telas/TelaGaleria.tsx     Galeria de arte (?galeria)
 ├── utilitarios/              formatar.ts (1.2K, 3.4M…), aleatorio.ts
-└── Images/Dinossauros/       Guia estético (+ futuros assets WebP)
+└── Images/Dinossauros/       Guia estético (+ assets WebP opcionais)
 ```
-**Em transição (etapa 2):** as pastas antigas em inglês (`src/game`, `src/data`, `src/types`,
+
+### Assets de imagem (opcional)
+Se existir `src/Images/Dinossauros/<id>/armadura_<N>.webp` (ou `_128`/`_256`/`_512` antes da
+extensão; `.png` também), o `SpriteDino` usa a imagem no lugar do SVG para aquela espécie e
+nível de armadura. `<id>` = id da espécie (`triceratops`, `tiranossauro`…), `<N>` = 0 a 10.
+
+### Desenhar/alterar armaduras
+Dados em `src/dados/armaduras.ts` (material, peças, gema, aura, penacho, brilhos por nível);
+desenho das peças em `src/componentes/dino/Armadura.tsx`; posição por espécie em
+`src/componentes/dino/ancoras.ts`.
+
+**Em transição (etapa 3.2):** as pastas antigas em inglês (`src/game`, `src/data`, `src/types`,
 `src/screens`, `src/components`, `src/hooks`, `src/storage`, `src/utils`) ainda alimentam a
 interface e serão substituídas pela interface em PT-BR.
 
@@ -80,4 +96,4 @@ interface e serão substituídas pela interface em PT-BR.
    nível máximo 1000 com armaduras a cada 100 níveis.
    - 3.1 ✅ Camada de lógica em PT-BR + testes + simulação.
    - 3.2 ⏳ Interface em PT-BR ligada à nova lógica (remove código antigo).
-   - 3.3 ⏳ Arte das 6 espécies conforme o guia + visual das armaduras.
+   - 3.3 ✅ Arte das 6 espécies conforme o guia + visual das armaduras (galeria em `?galeria`).

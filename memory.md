@@ -9,6 +9,8 @@
 - **Feito (3.1):** nova camada de lógica em PT-BR em `src/tipos`, `src/dados`, `src/jogo`,
   `src/armazenamento`, `src/utilitarios`, com testes (`src/jogo/jogo.test.ts`) e simulação
   (`npm run simular`).
+- **Feito (3.3, arte):** `src/componentes/SpriteDino.tsx` + `src/componentes/dino/` (6 espécies em 3/4,
+  armaduras por peça, suporte a imagens WebP). Revisar em `http://localhost:5173/?galeria`.
 - **A interface ainda usa o código antigo em inglês** (`src/game`, `src/data`, `src/screens`…).
 
 ## Próximos passos
