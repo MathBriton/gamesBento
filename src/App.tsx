@@ -1,29 +1,29 @@
 import { useState, type ComponentType } from 'react';
-import { Popups } from './components/ui';
-import { GameProvider } from './hooks/useGame';
-import { BattleScreen } from './screens/battle/BattleScreen';
-import { CollectionScreen } from './screens/CollectionScreen';
-import type { Navigate, Screen } from './screens/navigation';
-import { SettingsScreen } from './screens/SettingsScreen';
-import { SplashScreen } from './screens/SplashScreen';
+import { Avisos } from './componentes/ui';
+import { ProvedorJogo } from './ganchos/useJogo';
+import { TelaBatalha } from './telas/batalha/TelaBatalha';
+import type { Navegar, Tela } from './telas/navegacao';
+import { TelaAbertura } from './telas/TelaAbertura';
+import { TelaAjustes } from './telas/TelaAjustes';
+import { TelaColecao } from './telas/TelaColecao';
 
-const SCREENS: Record<Screen, ComponentType<{ navigate: Navigate }>> = {
-  splash: SplashScreen,
-  battle: BattleScreen,
-  collection: CollectionScreen,
-  settings: SettingsScreen,
+const TELAS: Record<Tela, ComponentType<{ navegar: Navegar }>> = {
+  abertura: TelaAbertura,
+  batalha: TelaBatalha,
+  colecao: TelaColecao,
+  ajustes: TelaAjustes,
 };
 
 export function App() {
-  const [screen, setScreen] = useState<Screen>('splash');
-  const Current = SCREENS[screen];
+  const [tela, setTela] = useState<Tela>('abertura');
+  const Atual = TELAS[tela];
 
   return (
-    <GameProvider>
+    <ProvedorJogo>
       <main className="app">
-        <Current key={screen} navigate={setScreen} />
-        <Popups />
+        <Atual key={tela} navegar={setTela} />
+        <Avisos />
       </main>
-    </GameProvider>
+    </ProvedorJogo>
   );
 }

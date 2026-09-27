@@ -1,4 +1,5 @@
-const SUFIXOS = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc'];
+// Com dinossauros no Nv 1000 os números passam de 10^60; acima do último sufixo, usa notação científica.
+const SUFIXOS = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'Ud', 'Dd', 'Td', 'Qad', 'Qid', 'Sxd', 'Spd', 'Ocd', 'Nod', 'Vg'];
 
 /** Números grandes no estilo clicker: 950, 1.25K, 34.5M, 120B... */
 export function formatarNumero(n: number): string {

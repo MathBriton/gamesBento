@@ -55,11 +55,20 @@ src/
 │   ├── jogo.test.ts          Testes
 │   └── simulacao.sim.ts      Simulação de balanceamento (npm run simular)
 ├── armazenamento/salvamento.ts  localStorage + migração de saves antigos
+├── ganchos/useJogo.tsx       Loja do estado (fora do React, useSyncExternalStore), salvamento e offline
+├── audio/som.ts              Efeitos (Web Audio), música e narração (só botões 🔊)
 ├── componentes/
+│   ├── ui.tsx                BotaoGrande, BarraTopo, Modal, Avisos, Confete, BarraProgresso
 │   ├── Cel.tsx               Primitivas do estilo (contorno, cel shading, misturarCor)
 │   ├── SpriteDino.tsx        Dinossauro (SVG ou imagem WebP, se existir) + armadura
+│   ├── SpriteInimigo.tsx     Gosma, Morcego, Golem, Planta (+ versão chefão)
 │   └── dino/                 especies.tsx (6 desenhos), primitivas.tsx, ancoras.ts, Armadura.tsx
-├── telas/TelaGaleria.tsx     Galeria de arte (?galeria)
+├── telas/
+│   ├── navegacao.ts          Tela = abertura | batalha | colecao | ajustes
+│   ├── TelaAbertura.tsx, TelaColecao.tsx, TelaAjustes.tsx
+│   ├── TelaGaleria.tsx       Galeria de arte (?galeria)
+│   └── batalha/              TelaBatalha (arena + loop 10x/s), PainelTime (compras), ModalArmadura, zona.ts
+├── estilos.css               Estilos (classes em PT-BR)
 ├── utilitarios/              formatar.ts (1.2K, 3.4M…), aleatorio.ts
 └── Images/Dinossauros/       Guia estético (+ assets WebP opcionais)
 ```
@@ -74,9 +83,6 @@ Dados em `src/dados/armaduras.ts` (material, peças, gema, aura, penacho, brilho
 desenho das peças em `src/componentes/dino/Armadura.tsx`; posição por espécie em
 `src/componentes/dino/ancoras.ts`.
 
-**Em transição (etapa 3.2):** as pastas antigas em inglês (`src/game`, `src/data`, `src/types`,
-`src/screens`, `src/components`, `src/hooks`, `src/storage`, `src/utils`) ainda alimentam a
-interface e serão substituídas pela interface em PT-BR.
 
 ## Regras do jogo (resumo)
 - **Fases**: 10 inimigos por fase; a cada 5 fases, um **chefão** com 30 s. Se perder, volta uma
@@ -92,8 +98,9 @@ interface e serão substituídas pela interface em PT-BR.
 ## Histórico de etapas
 1. MVP educativo (SDD) → descartado.
 2. Idle de batalha com ovos e evolução a cada 100 níveis (commit base).
-3. **Etapa atual:** reorganização — PT-BR, compra de dinossauros (sem ovos), 6 espécies do guia,
+3. Reorganização — PT-BR, compra de dinossauros (sem ovos), 6 espécies do guia,
    nível máximo 1000 com armaduras a cada 100 níveis.
    - 3.1 ✅ Camada de lógica em PT-BR + testes + simulação.
-   - 3.2 ⏳ Interface em PT-BR ligada à nova lógica (remove código antigo).
+   - 3.2 ✅ Interface em PT-BR ligada à nova lógica; código antigo removido.
    - 3.3 ✅ Arte das 6 espécies conforme o guia + visual das armaduras (galeria em `?galeria`).
+4. **Próxima etapa:** a definir com o usuário (ver memory.md → Próximos passos).

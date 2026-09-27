@@ -203,5 +203,7 @@ describe('formatação', () => {
     expect(formatarNumero(1250)).toBe('1.25K');
     expect(formatarNumero(34_500_000)).toBe('34.5M');
     expect(formatarNumero(120e9)).toBe('120B');
+    expect(formatarNumero(1e45)).toBe('1.00Qad');
+    expect(formatarNumero(1e70)).toBe('1.00e70');
   });
 });
