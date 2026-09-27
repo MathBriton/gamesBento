@@ -1,6 +1,7 @@
 import { ARMADURAS } from '../dados/armaduras';
 import { DINOSSAUROS, IDS_DINOSSAUROS } from '../dados/dinossauros';
 import { SpriteDino } from '../componentes/SpriteDino';
+import { CenarioZona } from '../componentes/cenarios/CenarioZona';
 import { SpriteInimigo } from '../componentes/SpriteInimigo';
 import { INIMIGOS, TIPOS_INIMIGO } from '../dados/inimigos';
 import { ZONAS } from '../dados/zonas';
@@ -33,6 +34,18 @@ export function TelaGaleria() {
             {ARMADURAS.map((a) => (
               <SpriteDino key={a.nivel} id={id} armadura={a.nivel} className="galeria__sprite" />
             ))}
+          </div>
+        ))}
+      </div>
+
+      <h1>Cenários das zonas (com o chefão)</h1>
+      <p>Desenhos: src/componentes/cenarios/CenarioZona.tsx · zonas: src/dados/zonas.ts</p>
+      <div className="galeria__cenarios">
+        {ZONAS.map((z) => (
+          <div key={z.id} className="galeria__cenario">
+            <CenarioZona zona={z.id} className="cenario" />
+            <SpriteInimigo tipo={z.chefao} chefao className="galeria__cenario-monstro" />
+            <span className="galeria__cenario-nome">{z.icone} {z.nome}</span>
           </div>
         ))}
       </div>

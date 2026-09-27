@@ -295,8 +295,8 @@ function Serpente({ chefao }: PropsMonstro) {
 
 /* ---------- Cérbero (grego): filhotinho de três cabeças ---------- */
 function CabecaCachorro({ x, y, r, chefao, lingua }: { x: number; y: number; r: number; chefao: boolean; lingua: boolean }) {
-  const pelo = '#5a5470';
-  const claro = '#9d95b8';
+  const pelo = '#7d74a3';
+  const claro = '#c3bce0';
   return (
     <g>
       <PecaCel d={`M${x - r * 0.9} ${y - r * 0.4} Q${x - r * 1.35} ${y + r * 0.2} ${x - r * 1.05} ${y + r * 0.75} Q${x - r * 0.75} ${y + r * 0.2} ${x - r * 0.55} ${y - r * 0.2} Z`} cor={misturarCor(pelo, 0.8)} espessura={3.5} />
@@ -317,7 +317,7 @@ function CabecaCachorro({ x, y, r, chefao, lingua }: { x: number; y: number; r: 
 }
 
 function Cerbero({ chefao }: PropsMonstro) {
-  const pelo = '#5a5470';
+  const pelo = '#7d74a3';
   return (
     <g>
       <PecaCel d="M144 168 Q176 160 172 134 Q162 148 150 146 Z" cor={pelo} />

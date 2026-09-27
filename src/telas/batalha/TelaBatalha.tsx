@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import { tocarEfeito } from '../../audio/som';
+import { CenarioZona } from '../../componentes/cenarios/CenarioZona';
 import { SpriteDino } from '../../componentes/SpriteDino';
 import { SpriteInimigo } from '../../componentes/SpriteInimigo';
 import { BarraProgresso, BotaoGrande, Modal } from '../../componentes/ui';
@@ -122,6 +123,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
         <div className="barra-fase__titulo">
           {zona.icone} Fase {b.fase}
           {b.faseMaxima > b.fase && <small> (recorde {b.faseMaxima})</small>}
+          <span className="barra-fase__zona">{zona.nome}</span>
         </div>
         {b.ehChefao ? (
           <div className="barra-fase__chefao">👑 CHEFÃO · ⏱️ {Math.ceil(tempoChefao / 1000)}s</div>
@@ -135,6 +137,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
       </div>
 
       <div className={`arena ${b.ehChefao ? 'arena--chefao' : ''}`} onPointerDown={aoTocar} role="button" aria-label="Atacar o inimigo">
+        <CenarioZona zona={zona.id} className="cenario" />
         <div className="info-inimigo">
           <div className="info-inimigo__nome">{b.ehChefao ? `👑 ${inimigo.nomeChefao}` : inimigo.nome}</div>
           <div className="barra-vida" role="progressbar" aria-valuemin={0} aria-valuemax={b.vidaMaximaInimigo} aria-valuenow={Math.ceil(b.vidaInimigo)}>
