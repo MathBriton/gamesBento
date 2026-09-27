@@ -1,7 +1,8 @@
 export type IdDinossauro = 'triceratops' | 'estegossauro' | 'braquiossauro' | 'anquilossauro' | 'velociraptor' | 'tiranossauro';
-export type IdRegiao = 'planicie' | 'selva' | 'costa' | 'montanhas' | 'deserto' | 'vulcao';
+export type IdZona = 'floresta' | 'grecia' | 'castelo' | 'nordico' | 'submundo' | 'midgard';
 export type Dieta = 'herbivoro' | 'carnivoro';
-export type TipoInimigo = 'gosma' | 'morcego' | 'golem' | 'planta';
+/** Monstros mitológicos em versão infantil (grega, nórdica e clássicos de terror). */
+export type TipoInimigo = 'lobisomem' | 'troll' | 'ciclope' | 'minotauro' | 'medusa' | 'vampiro' | 'fenrir' | 'serpente' | 'cerbero';
 
 export interface Dinossauro {
   id: IdDinossauro;
@@ -24,14 +25,17 @@ export interface Dinossauro {
   precoCompra: number;
 }
 
-export interface Regiao {
-  id: IdRegiao;
+/** Zona temática: muda a cada `CONFIG.fasesPorZona` fases, em ciclo. */
+export interface Zona {
+  id: IdZona;
   nome: string;
   icone: string;
-  /** Posição na sequência de zonas (0 = primeira). */
-  ordem: number;
-  /** Fundo CSS da arena nesta zona. */
-  fundo: string;
+  /** Monstros comuns desta zona. */
+  inimigos: TipoInimigo[];
+  /** Monstro que aparece como chefão nesta zona. */
+  chefao: TipoInimigo;
+  /** Cor de fundo da tela em volta da arena. */
+  corTela: string;
 }
 
 export interface Ajustes {

@@ -9,6 +9,7 @@ import { INIMIGOS } from '../../dados/inimigos';
 import { aplicarDano, avancarTempo, enfrentarChefao, podeEnfrentarChefao, type EventoBatalha } from '../../jogo/batalha/batalha';
 import { danoDoTime, danoToque, nivelArmaduraDe } from '../../jogo/batalha/formulas';
 import type { QuantidadeCompra } from '../../jogo/batalha/melhorias';
+import { zonaDaFase } from '../../jogo/batalha/zonas';
 import { useJogo } from '../../ganchos/useJogo';
 import type { IdDinossauro } from '../../tipos';
 import { aleatorioPadrao } from '../../utilitarios/aleatorio';
@@ -16,7 +17,6 @@ import { formatarDuracao, formatarNumero } from '../../utilitarios/formatar';
 import type { Navegar } from '../navegacao';
 import { ModalArmadura } from './ModalArmadura';
 import { PainelTime } from './PainelTime';
-import { zonaDaFase } from './zona';
 import { IconeMoeda } from '../../componentes/IconeMoeda';
 
 const INTERVALO_MS = 100;
@@ -108,7 +108,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
   const tempoChefao = b.fimChefaoEm !== null ? Math.max(0, b.fimChefaoEm - agora) : 0;
 
   return (
-    <div className="tela tela-batalha" style={{ background: zona.regiao.fundo }}>
+    <div className="tela tela-batalha" style={{ background: zona.corTela }}>
       <header className="batalha-topo">
         <span className="recurso recurso--moedas" title="Moedas"><IconeMoeda /> {formatarNumero(estado.moedas)}</span>
         <span className="recurso" title="Dano por segundo do time">⚔️ {formatarNumero(danoDoTime(estado))}/s</span>
@@ -120,7 +120,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
 
       <div className="barra-fase">
         <div className="barra-fase__titulo">
-          {zona.regiao.icone} Fase {b.fase}
+          {zona.icone} Fase {b.fase}
           {b.faseMaxima > b.fase && <small> (recorde {b.faseMaxima})</small>}
         </div>
         {b.ehChefao ? (
@@ -149,7 +149,7 @@ export function TelaBatalha({ navegar }: { navegar: Navegar }) {
         </div>
 
         <div className="inimigo" ref={refInimigo}>
-          <SpriteInimigo key={`${b.fase}-${b.abates}-${b.ehChefao}`} tipo={b.tipoInimigo} cor={zona.corInimigo} chefao={b.ehChefao} className="inimigo__sprite" />
+          <SpriteInimigo key={`${b.fase}-${b.abates}-${b.ehChefao}`} tipo={b.tipoInimigo} chefao={b.ehChefao} className="inimigo__sprite" />
         </div>
 
         <div className="fila-time">

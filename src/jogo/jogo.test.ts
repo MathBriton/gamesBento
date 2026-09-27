@@ -5,7 +5,10 @@ import { CONFIG } from '../dados/config';
 import { DINOSSAUROS, IDS_DINOSSAUROS } from '../dados/dinossauros';
 import type { EstadoJogo } from '../tipos';
 import { formatarNumero } from '../utilitarios/formatar';
-import { aplicarDano, avancarTempo, enfrentarChefao } from './batalha/batalha';
+import { TIPOS_INIMIGO } from '../dados/inimigos';
+import { ZONAS } from '../dados/zonas';
+import { aplicarDano, avancarTempo, enfrentarChefao, gerarInimigo } from './batalha/batalha';
+import { zonaDaFase } from './batalha/zonas';
 import { custoNiveis, danoDinossauro, danoDoTime, maximoCompravel, nivelArmaduraDe, moedasPorInimigo, vidaMaximaInimigo } from './batalha/formulas';
 import {
   adicionarNiveis,
@@ -149,6 +152,22 @@ describe('batalha', () => {
     expect(denovo.batalha.ehChefao).toBe(true);
   });
 
+  it('monstros vêm da zona da fase; o chefão é o chefão da zona', () => {
+    for (let fase = 1; fase <= CONFIG.fasesPorZona * ZONAS.length * 2; fase++) {
+      const zona = zonaDaFase(fase);
+      const b = gerarInimigo(criarEstadoInicial(T0).batalha, fase, T0, sequencia(0.1, 0.5, 0.9));
+      if (b.ehChefao) expect(b.tipoInimigo).toBe(zona.chefao);
+      else expect(zona.inimigos).toContain(b.tipoInimigo);
+    }
+    expect(zonaDaFase(1).id).toBe(ZONAS[0].id);
+    expect(zonaDaFase(CONFIG.fasesPorZona + 1).id).toBe(ZONAS[1].id);
+    expect(zonaDaFase(CONFIG.fasesPorZona * ZONAS.length + 1).id).toBe(ZONAS[0].id);
+  });
+
+  it('toda zona só usa monstros que existem', () => {
+    for (const z of ZONAS) for (const t of [...z.inimigos, z.chefao]) expect(TIPOS_INIMIGO).toContain(t);
+  });
+
   it('o time causa dano com o tempo', () => {
     const e = comDino(10);
     const r = avancarTempo(e, 0.1, T0, aleatorio);
@@ -195,6 +214,13 @@ describe('offline e salvamento', () => {
     const e = migrar(v4, criarEstadoInicial(T0));
     expect(e.moedas).toBe(777);
     expect('ouro' in e).toBe(false);
+  });
+
+  it('troca monstros que não existem mais (ex.: gosma) pelo da zona', () => {
+    const base = criarEstadoInicial(T0);
+    const antigo = { ...base, batalha: { ...base.batalha, fase: 12, tipoInimigo: 'gosma' } } as unknown as Parameters<typeof migrar>[0];
+    const e = migrar(antigo, criarEstadoInicial(T0));
+    expect(zonaDaFase(12).inimigos).toContain(e.batalha.tipoInimigo);
   });
 
   it('save atual sobrevive a salvar e carregar', () => {

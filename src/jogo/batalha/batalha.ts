@@ -1,8 +1,8 @@
 import { CONFIG } from '../../dados/config';
-import { TIPOS_INIMIGO } from '../../dados/inimigos';
 import type { EstadoBatalha, EstadoJogo } from '../../tipos';
 import { sortear, type Aleatorio } from '../../utilitarios/aleatorio';
 import { danoDoTime, ehFaseDeChefao, moedasPorInimigo, vidaMaximaInimigo } from './formulas';
+import { zonaDaFase } from './zonas';
 
 export type EventoBatalha =
   | { tipo: 'abate'; moedas: number; chefao: boolean }
@@ -14,7 +14,7 @@ export interface ResultadoBatalha {
   eventos: EventoBatalha[];
 }
 
-/** Coloca um novo inimigo na fase indicada. */
+/** Coloca um novo inimigo na fase indicada: monstro comum da zona ou o chefão dela. */
 export function gerarInimigo(batalha: EstadoBatalha, fase: number, agora: number, aleatorio: Aleatorio): EstadoBatalha {
   const chefao = ehFaseDeChefao(fase) && !batalha.treinando;
   const vida = vidaMaximaInimigo(fase, chefao);
@@ -22,7 +22,7 @@ export function gerarInimigo(batalha: EstadoBatalha, fase: number, agora: number
     ...batalha,
     fase,
     faseMaxima: Math.max(batalha.faseMaxima, fase),
-    tipoInimigo: sortear(aleatorio, TIPOS_INIMIGO),
+    tipoInimigo: chefao ? zonaDaFase(fase).chefao : sortear(aleatorio, zonaDaFase(fase).inimigos),
     vidaInimigo: vida,
     vidaMaximaInimigo: vida,
     ehChefao: chefao,
@@ -36,7 +36,7 @@ export function criarBatalha(): EstadoBatalha {
     fase: 1,
     faseMaxima: 1,
     abates: 0,
-    tipoInimigo: 'gosma',
+    tipoInimigo: zonaDaFase(1).inimigos[0],
     vidaInimigo: vida,
     vidaMaximaInimigo: vida,
     ehChefao: false,

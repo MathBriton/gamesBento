@@ -1,4 +1,6 @@
 import { CONFIG } from '../dados/config';
+import { INIMIGOS } from '../dados/inimigos';
+import { zonaDaFase } from '../jogo/batalha/zonas';
 import { criarEstadoInicial, VERSAO_SAVE } from '../jogo/estado';
 import type { EstadoJogo, IdDinossauro } from '../tipos';
 
@@ -73,11 +75,18 @@ export function migrar(salvo: SaveQualquer, novo: EstadoJogo): EstadoJogo {
     moedas: salvo.moedas ?? salvo.ouro ?? novo.moedas,
     jogador: { ...novo.jogador, ...salvo.jogador },
     ajustes: { ...novo.ajustes, ...salvo.ajustes },
-    batalha: { ...novo.batalha, ...salvo.batalha },
+    batalha: corrigirInimigo({ ...novo.batalha, ...salvo.batalha }),
     dinossauros: salvo.dinossauros ?? {},
   };
   delete resultado.ouro;
   return resultado;
+}
+
+/** Monstros de versões antigas (gosma, morcego…) não existem mais: troca pelo monstro da zona. */
+function corrigirInimigo(batalha: EstadoJogo['batalha']): EstadoJogo['batalha'] {
+  if (batalha.tipoInimigo in INIMIGOS) return batalha;
+  const zona = zonaDaFase(batalha.fase);
+  return { ...batalha, tipoInimigo: batalha.ehChefao ? zona.chefao : zona.inimigos[0] };
 }
 
 /** v1–v3: nomes em inglês. Mantém dinossauros (e níveis na v3), moedas e ajustes; ovos deixam de existir. */

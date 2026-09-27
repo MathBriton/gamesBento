@@ -1,6 +1,9 @@
 import { ARMADURAS } from '../dados/armaduras';
 import { DINOSSAUROS, IDS_DINOSSAUROS } from '../dados/dinossauros';
 import { SpriteDino } from '../componentes/SpriteDino';
+import { SpriteInimigo } from '../componentes/SpriteInimigo';
+import { INIMIGOS, TIPOS_INIMIGO } from '../dados/inimigos';
+import { ZONAS } from '../dados/zonas';
 
 /**
  * Galeria de arte (ferramenta de desenvolvimento): todas as espécies em todos os níveis de
@@ -30,6 +33,22 @@ export function TelaGaleria() {
             {ARMADURAS.map((a) => (
               <SpriteDino key={a.nivel} id={id} armadura={a.nivel} className="galeria__sprite" />
             ))}
+          </div>
+        ))}
+      </div>
+
+      <h1>Monstros (comum e chefão) por zona</h1>
+      <p>Dados: src/dados/inimigos.ts e src/dados/zonas.ts · desenhos: src/componentes/inimigos/monstros.tsx</p>
+      <div className="galeria__monstros">
+        {TIPOS_INIMIGO.map((tipo) => (
+          <div key={tipo} className="galeria__monstro">
+            <SpriteInimigo tipo={tipo} className="galeria__sprite" />
+            <SpriteInimigo tipo={tipo} chefao className="galeria__sprite" />
+            <span>
+              {INIMIGOS[tipo].nome} / {INIMIGOS[tipo].nomeChefao}
+              <br />
+              <small>{ZONAS.filter((z) => z.inimigos.includes(tipo) || z.chefao === tipo).map((z) => z.icone).join(' ')}</small>
+            </span>
           </div>
         ))}
       </div>

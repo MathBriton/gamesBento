@@ -4,6 +4,8 @@ export const CONFIG = {
 
   /* Inimigos */
   inimigosPorFase: 10,
+  /** A zona temática (cenário e monstros) muda a cada N fases. */
+  fasesPorZona: 10,
   /** A cada N fases a fase é de chefão. */
   chefaoACada: 5,
   multiplicadorVidaChefao: 10,

@@ -327,6 +327,9 @@ button:focus-visible { outline: 4px solid #ffd93d; outline-offset: 3px; }
 .galeria__linha--titulo { text-align: center; font-weight: 800; font-size: 0.85rem; }
 .galeria__rotulo { font-weight: 900; }
 .galeria__sprite { width: 132px; border-radius: 12px; background: #f3ecdc; }
+.galeria__monstros { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.galeria__monstro { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px; border-radius: 14px; background: #fff; font-weight: 800; text-align: center; }
+.galeria__monstro svg { width: 150px; }
 
 /* ---------- Sprites ---------- */
 .sprite-dino-img { display: block; width: 100%; height: auto; }
